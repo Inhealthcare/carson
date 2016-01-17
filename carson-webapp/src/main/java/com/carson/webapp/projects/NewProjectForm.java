@@ -6,16 +6,16 @@ public class NewProjectForm {
 
 	@NotBlank
 	private String scmUrl;
-	
+
 	@NotBlank
 	private String scmUsername;
-	
+
 	@NotBlank
 	private String scmPassword;
-	
+
 	@NotBlank
 	private String buildUrl;
-	
+
 	@NotBlank
 	private String name;
 
@@ -68,7 +68,17 @@ public class NewProjectForm {
 	public void update(Project project) {
 
 		project.setName(name);
-		
+
+		SvnRepository svn = new SvnRepository();
+		svn.setUrl(scmUrl);
+		svn.setUsername(scmUsername);
+		svn.setPassword(scmPassword);
+
+		project.setSvnRepository(svn);
+
+		JenkinsBuildServer server = new JenkinsBuildServer();
+		server.setUrl(buildUrl);
+		project.setJenkinsBuildServer(server);
 
 	}
 

@@ -1,5 +1,7 @@
 package com.carson.webapp.projects;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,31 +14,37 @@ public class ProjectTest {
 	}
 
 	public ProjectTestResult execute() {
-		
+
 		List<String> errorList = new ArrayList<>();
 
 		try {
-			testScm();			
+			testScm();
 		} catch (Exception e) {
 			errorList.add("project.test.scm.connection.error");
 		}
-		
+
 		try {
 			testBuild();
 		} catch (Exception e) {
 			errorList.add("project.text.build.connection.error");
 		}
-		
-		ProjectTestResult result = new ProjectTestResult(errorList );
+
+		ProjectTestResult result = new ProjectTestResult(errorList);
 		return result;
 	}
 
-	private void testBuild() {
-		
+	private void testBuild() throws Exception {
+
+		URL url = new URL(project.getJenkinsBuildServer().getUrl());
+		url.openConnection();
+
 	}
 
-	private void testScm() {
-		
+	private void testScm() throws Exception {
+
+		URL url = new URL(project.getSvnRepository().getUrl());
+		url.openConnection();
+
 	}
 
 }

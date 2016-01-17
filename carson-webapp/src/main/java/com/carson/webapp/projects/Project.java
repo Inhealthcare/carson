@@ -1,5 +1,8 @@
 package com.carson.webapp.projects;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
@@ -18,7 +21,15 @@ public class Project extends AbstractEntity {
 	private BuildStatus buildStatus;
 
 	private Status status;
-	
+
+	@Embedded
+	@AttributeOverrides({ @AttributeOverride(name = "url", column = @Column(name = "SVN_URL") ) })
+	private SvnRepository svnRepository;
+
+	@Embedded
+	@AttributeOverrides({ @AttributeOverride(name = "url", column = @Column(name = "JENKINS_URL") ) })
+	private JenkinsBuildServer jenkinsBuildServer;
+
 	public Project() {
 		status = Status.UNKNOWN;
 	}
@@ -45,6 +56,22 @@ public class Project extends AbstractEntity {
 
 	public BuildStatus getBuildStatus() {
 		return buildStatus;
+	}
+
+	public void setSvnRepository(SvnRepository svnRepository) {
+		this.svnRepository = svnRepository;
+	}
+
+	public SvnRepository getSvnRepository() {
+		return svnRepository;
+	}
+
+	public void setJenkinsBuildServer(JenkinsBuildServer jenkinsBuildServer) {
+		this.jenkinsBuildServer = jenkinsBuildServer;
+	}
+
+	public JenkinsBuildServer getJenkinsBuildServer() {
+		return jenkinsBuildServer;
 	}
 
 }
