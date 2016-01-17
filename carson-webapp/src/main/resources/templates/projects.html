@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:include="fragments/head::head (title=#{page.title.projects})"></head>
+  <body>
+  	
+  	<div th:replace="fragments/header::header (page='projects')"></div>
+  	
+  	<div class="container-fluid">
+  		<div class="row">
+		  <div class="col-md-12">
+		  
+		  	<h1 th:text="#{projects.title}"></h1>
+		  	
+		  	<div th:if="${projects.empty}">
+		  		<h2 th:text="#{projects.welcome.title}"></h2>
+		  		<p th:text="#{projects.welcome.action}"></p>
+		  		<a th:text="#{projects.welcome.link}" th:href="@{/projects/newProject}" class="btn btn-default" ></a>
+		  	</div>
+		  	
+		  	<div th:if="${!projects.empty}">
+		  		
+		  		<div class="media" th:each="project : ${projects}">
+				  <div class="media-left">
+				    <a href="#">
+				      <img class="media-object" src="http://placehold.it/50x50"></img>
+				    </a>
+				  </div>
+				  <div class="media-body">
+				    <h4 class="media-heading" th:text="${project.name}"></h4>
+				    <ul>
+				    	<li th:text="${project.status}"></li>
+				    	<li th:text="${project.buildStatus.state}"></li>
+				    </ul>
+				  </div>
+				</div>
+		  		
+		  	</div>
+			
+		  </div>		 
+		</div>
+	</div>
+	
+	<th:block th:include="fragments/scripts::scripts"></th:block>
+	
+  </body>
+</html>
