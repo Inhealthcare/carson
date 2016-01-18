@@ -26,22 +26,34 @@
 				    <h4 class="media-heading" th:text="${project.name}"></h4>
 				    <ul>
 				    	<li th:text="${project.status}"></li>
-				    	<li th:text="${project.buildStatus.state}"></li>
+				    	<li th:text="${project.buildServer.buildStatus.state}"></li>
 				    </ul>
 
 				    <div class="row">
 				    
 				    	<div class="col-sm-6">
 				    		<ul>
-						    	<li th:text="${project.svnRepository.url}"></li>
-						    	<li th:text="${project.svnRepository.username}"></li>
+						    	<li th:text="${project.sourceControl.svnRepository.url}"></li>
+						    	<li th:text="${project.sourceControl.svnRepository.username}"></li>
 						    </ul>
 				    	</div>
 				    	
 				    	<div class="col-sm-6">
 				    		<ul>
-						    	<li th:text="${project.jenkinsBuildServer.url}"></li>
+						    	<li th:text="${project.buildServer.jenkinsBuildServer.url}"></li>
 						    </ul>
+				    	</div>
+				    
+				    </div>
+				    
+				   <div class="row">
+				    
+				    	<div class="col-sm-12">
+						    <form class="form" th:action="@{/projects/{id}(id=${project.id})}" method="POST">
+						    
+						    	<input type="submit" class="btn btn-default" name="create" th:value="#{project.createjob.form.submit}"></input>
+						    	
+						    </form>
 				    	</div>
 				    
 				    </div>

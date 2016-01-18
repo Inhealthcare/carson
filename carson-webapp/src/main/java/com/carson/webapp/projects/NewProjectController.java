@@ -59,8 +59,6 @@ public class NewProjectController {
 			return newProject(map);
 		}
 		
-		project.setBuildStatus(new BuildStatus());
-		
 		projectRepository.save(project);
 
 		return "redirect:/projects";

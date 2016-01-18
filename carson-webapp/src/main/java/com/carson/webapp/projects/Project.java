@@ -17,18 +17,13 @@ public class Project extends AbstractEntity {
 
 	private String name;
 
-	@Embedded
-	private BuildStatus buildStatus;
-
 	private Status status;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "url", column = @Column(name = "SVN_URL") ) })
-	private SvnRepository svnRepository;
+	private SourceControl sourceControl;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "url", column = @Column(name = "JENKINS_URL") ) })
-	private JenkinsBuildServer jenkinsBuildServer;
+	private BuildServer buildServer;
 
 	public Project() {
 		status = Status.UNKNOWN;
@@ -50,28 +45,20 @@ public class Project extends AbstractEntity {
 		this.name = name;
 	}
 
-	public void setBuildStatus(BuildStatus buildStatus) {
-		this.buildStatus = buildStatus;
+	public SourceControl getSourceControl() {
+		return sourceControl;
 	}
 
-	public BuildStatus getBuildStatus() {
-		return buildStatus;
+	public void setSourceControl(SourceControl sourceControl) {
+		this.sourceControl = sourceControl;
 	}
 
-	public void setSvnRepository(SvnRepository svnRepository) {
-		this.svnRepository = svnRepository;
+	public BuildServer getBuildServer() {
+		return buildServer;
 	}
 
-	public SvnRepository getSvnRepository() {
-		return svnRepository;
-	}
-
-	public void setJenkinsBuildServer(JenkinsBuildServer jenkinsBuildServer) {
-		this.jenkinsBuildServer = jenkinsBuildServer;
-	}
-
-	public JenkinsBuildServer getJenkinsBuildServer() {
-		return jenkinsBuildServer;
+	public void setBuildServer(BuildServer buildServer) {
+		this.buildServer = buildServer;
 	}
 
 }

@@ -74,11 +74,15 @@ public class NewProjectForm {
 		svn.setUsername(scmUsername);
 		svn.setPassword(scmPassword);
 
-		project.setSvnRepository(svn);
+		SourceControl sc = new SourceControl();
+		sc.setSvnRepository(svn);
+		project.setSourceControl(sc);
 
 		JenkinsBuildServer server = new JenkinsBuildServer();
 		server.setUrl(buildUrl);
-		project.setJenkinsBuildServer(server);
+		BuildServer bs = new BuildServer();
+		bs.setJenkinsBuildServer(server);
+		project.setBuildServer(bs);
 
 	}
 

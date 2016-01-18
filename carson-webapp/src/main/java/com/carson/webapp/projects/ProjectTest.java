@@ -35,14 +35,14 @@ public class ProjectTest {
 
 	private void testBuild() throws Exception {
 
-		URL url = new URL(project.getJenkinsBuildServer().getUrl());
+		URL url = new URL(project.getBuildServer().getJenkinsBuildServer().getUrl());
 		url.openConnection();
 
 	}
 
 	private void testScm() throws Exception {
 
-		URL url = new URL(project.getSvnRepository().getUrl());
+		URL url = new URL(project.getSourceControl().getSvnRepository().getUrl());
 		url.openConnection();
 
 	}

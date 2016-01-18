@@ -33,7 +33,7 @@
 				    <h4 class="media-heading" th:text="${project.name}"></h4>
 				    <ul>
 				    	<li th:text="${project.status}"></li>
-				    	<li th:text="${project.buildStatus.state}"></li>
+				    	<li th:text="${project.buildServer.buildStatus.state}"></li>
 				    </ul>
 				    <div>
 				    	<a class="btn btn-default" th:href="@{/projects/{id}(id=${project.id})}" th:text="#{projects.list.goto.link}"></a>
@@ -42,14 +42,14 @@
 				    
 				    	<div class="col-sm-6">
 				    		<ul>
-						    	<li th:text="${project.svnRepository.url}"></li>
-						    	<li th:text="${project.svnRepository.username}"></li>
+						    	<li th:text="${project.sourceControl.svnRepository.url}"></li>
+						    	<li th:text="${project.sourceControl.svnRepository.username}"></li>
 						    </ul>
 				    	</div>
 				    	
 				    	<div class="col-sm-6">
 				    		<ul>
-						    	<li th:text="${project.jenkinsBuildServer.url}"></li>
+						    	<li th:text="${project.buildServer.jenkinsBuildServer.url}"></li>
 						    </ul>
 				    	</div>
 				    
