@@ -1,5 +1,5 @@
 package org.jenkins.client;
 
-public class JobConfig {
+public class JobTemplate {
 
 }

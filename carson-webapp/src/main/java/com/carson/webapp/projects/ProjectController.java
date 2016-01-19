@@ -1,7 +1,8 @@
 package com.carson.webapp.projects;
 
 import org.jenkins.client.JenkinsClient;
-import org.jenkins.client.JobConfig;
+import org.jenkins.client.JenkinsClientException;
+import org.jenkins.client.JobTemplate;
 import org.jenkins.client.CreateItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,25 +42,29 @@ public class ProjectController {
 	public String create(ModelMap map, @PathVariable("id") Long id) {
 
 		Project project = projectRepository.findOne(id);
-		
-		createJob(project);
 
-		project.setStatus(Status.OK);
+		try {
+			createJob(project);
+			project.setStatus(Status.OK);
+		} catch (Exception e) {
+			project.setStatus(Status.FAILING);
+			return "redirect:/projects/" + id;
+		}
 
 		return "redirect:/projects/" + id;
 
 	}
 
-	private void createJob(Project project) {
+	private void createJob(Project project) throws JenkinsClientException {
 
 		BuildServer buildServer = project.getBuildServer();
 
 		JenkinsBuildServer jenkins = buildServer.getJenkinsBuildServer();
-		
+
 		JenkinsClient jenkinsClient = new JenkinsClient(jenkins.getUrl());
-		
-		jenkinsClient.createItem(new CreateItem(project.getName(), new JobConfig()));
-		
+
+		jenkinsClient.createItem(new CreateItem(project.getName(), new JobTemplate()));
+
 	}
 
 }

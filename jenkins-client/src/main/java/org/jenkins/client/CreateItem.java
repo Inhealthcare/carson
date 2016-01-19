@@ -3,19 +3,19 @@ package org.jenkins.client;
 public class CreateItem {
 
 	private String name;
-	private JobConfig config;
+	private JobTemplate template;
 
-	public CreateItem(String name, JobConfig config) {
+	public CreateItem(String name, JobTemplate template) {
 		this.name = name;
-		this.config = config;
+		this.template = template;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public JobConfig getConfig() {
-		return config;
+	public JobTemplate getTemplate() {
+		return template;
 	}
 
 }

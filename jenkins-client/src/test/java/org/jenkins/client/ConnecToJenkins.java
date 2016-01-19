@@ -1,32 +1,43 @@
 package org.jenkins.client;
 
+import org.jenkins.client.api.JobState;
+import org.jenkins.client.api.JenkinsState;
+import org.jenkins.client.api.Mode;
 import org.junit.Assert;
 import org.junit.Test;
-
-import generated.HudsonMavenMavenModuleSet;
-import generated.HudsonModelJob;
-import generated.HudsonModelNode;
-import generated.HudsonModelNodeMode;
 
 public class ConnecToJenkins {
 
 	@Test
-	public void shouldConnectToJenkins() {
+	public void shouldConnectToJenkins() throws JenkinsClientException {
 
 		JenkinsClient client = new JenkinsClient("http://localhost:8080");
-		HudsonModelNode node = client.getHudsonInstance();
+		JenkinsState node = client.getState();
 
-		Assert.assertEquals(HudsonModelNodeMode.NORMAL, node.getMode());
+		Assert.assertEquals(Mode.NORMAL, node.getMode());
 
 	}
-	
+
 	@Test
-	public void shouldFindAJob() {
+	public void shouldFindAJob() throws JenkinsClientException {
+
+		String jobName = "my-usual-build";
 
 		JenkinsClient client = new JenkinsClient("http://localhost:8080/");
-		HudsonMavenMavenModuleSet set = client.getMavenProject("my-usual-build");
+		JobState set = client.getJobState(jobName);
+		Assert.assertEquals(jobName, set.getDisplayName());
 
-		Assert.assertEquals("my-usual-build", set.getDisplayName() );
+	}
+
+	@Test
+	public void shouldCreateAJobAndFindIt() throws JenkinsClientException {
+
+		String jobName = "my-new-build";
+
+		JenkinsClient client = new JenkinsClient("http://localhost:8080/");
+		client.createItem(new CreateItem(jobName, new JobTemplate()));
+		JobState set = client.getJobState(jobName);
+		Assert.assertEquals(jobName, set.getDisplayName());
 
 	}
 
