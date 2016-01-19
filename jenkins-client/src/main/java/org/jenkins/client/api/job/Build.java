@@ -1,4 +1,4 @@
-package org.jenkins.client.api;
+package org.jenkins.client.api.job;
 
 public class Build {
 	private int number;

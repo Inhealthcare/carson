@@ -1,9 +1,10 @@
-package org.jenkins.client;
+package org.jenkins.client.api.config;
 
 import java.io.IOException;
 import java.io.Writer;
 
-import org.jenkins.client.api.Config;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 public class XmlConfigConverter {
 

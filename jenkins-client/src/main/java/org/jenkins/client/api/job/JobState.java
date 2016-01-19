@@ -1,4 +1,4 @@
-package org.jenkins.client.api;
+package org.jenkins.client.api.job;
 
 import java.util.List;
 

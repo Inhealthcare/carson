@@ -2,8 +2,7 @@ package com.carson.webapp.projects;
 
 import org.jenkins.client.JenkinsClient;
 import org.jenkins.client.JenkinsClientException;
-import org.jenkins.client.JobTemplate;
-import org.jenkins.client.CreateItem;
+import org.jenkins.client.api.config.ConfigFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -63,7 +62,7 @@ public class ProjectController {
 
 		JenkinsClient jenkinsClient = new JenkinsClient(jenkins.getUrl());
 
-		jenkinsClient.createItem(new CreateItem(project.getName(), new JobTemplate()));
+		jenkinsClient.createItem(project.getName(), ConfigFactory.createMavenProject());
 
 	}
 

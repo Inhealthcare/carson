@@ -1,4 +1,4 @@
-package org.jenkins.client.api;
+package org.jenkins.client.api.state;
 
 import java.util.List;
 

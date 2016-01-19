@@ -4,9 +4,10 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.util.Collections;
 
-import org.jenkins.client.api.Config;
-import org.jenkins.client.api.JenkinsState;
-import org.jenkins.client.api.JobState;
+import org.jenkins.client.api.config.Config;
+import org.jenkins.client.api.config.XmlConfigConverter;
+import org.jenkins.client.api.job.JobState;
+import org.jenkins.client.api.state.JenkinsState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -23,11 +24,11 @@ public class JenkinsClient {
 
 	private static final String CREATE_ITEM_ENDPOINT = "/createItem";
 	private static final String JSON_ENDPOINT = "/api/json";
+	private static final String CONFIG_ENDPOINT = "/config.xml";
 	private static final String JOB_PATH = "/job/";
 
 	private String apiUrl;
 	private RestTemplate template = new RestTemplate();
-	private ConfigFactory factory = new ConfigFactory();
 
 	public JenkinsClient(String baseUrl) {
 		if (baseUrl.endsWith("/")) {
@@ -60,7 +61,7 @@ public class JenkinsClient {
 		}
 	}
 
-	public void createItem(CreateItem createItem) throws JenkinsClientException {
+	public void createItem(String name, Config config) throws JenkinsClientException {
 
 		try {
 
@@ -68,10 +69,8 @@ public class JenkinsClient {
 			headers.set("Content-Type", MediaType.APPLICATION_XML_VALUE);
 
 			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl + CREATE_ITEM_ENDPOINT)
-					.queryParam("name", createItem.getName());
+					.queryParam("name", name);
 
-			Config config = factory.create(createItem.getTemplate());
-			
 			XmlConfigConverter xmlBuilder = new XmlConfigConverter();
 			StringWriter writer = new StringWriter();
 			xmlBuilder.write(config, writer);
@@ -90,6 +89,32 @@ public class JenkinsClient {
 			throw new JenkinsClientException(e);
 		}
 
+	}
+
+	public Config getItemConfig(String name) throws JenkinsClientException {
+		try {
+
+			HttpHeaders headers = new HttpHeaders();
+
+			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl + JOB_PATH + name + CONFIG_ENDPOINT);
+
+			XmlConfigConverter xmlBuilder = new XmlConfigConverter();
+
+			HttpEntity<?> entity = new HttpEntity<>(headers);
+
+			URI uri = builder.build().encode().toUri();
+
+			// build up config
+			logger.debug("Getting {}", uri, entity);
+			ResponseEntity<Config> responseEntity = template.exchange(uri, HttpMethod.GET, entity, Config.class);
+			logger.debug("Fetched {}", responseEntity);
+
+			return responseEntity.getBody();
+
+		} catch (Exception e) {
+			logger.debug("Fault {}", e);
+			throw new JenkinsClientException(e);
+		}
 	}
 
 }

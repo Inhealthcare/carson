@@ -1,8 +1,10 @@
 package org.jenkins.client;
 
-import org.jenkins.client.api.JobState;
-import org.jenkins.client.api.JenkinsState;
-import org.jenkins.client.api.Mode;
+import org.jenkins.client.api.config.Config;
+import org.jenkins.client.api.config.ConfigFactory;
+import org.jenkins.client.api.job.JobState;
+import org.jenkins.client.api.state.JenkinsState;
+import org.jenkins.client.api.state.Mode;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,9 +37,24 @@ public class ConnecToJenkins {
 		String jobName = "my-new-build";
 
 		JenkinsClient client = new JenkinsClient("http://localhost:8080/");
-		client.createItem(new CreateItem(jobName, new JobTemplate()));
+		client.createItem(jobName, ConfigFactory.createMavenProject());
 		JobState set = client.getJobState(jobName);
 		Assert.assertEquals(jobName, set.getDisplayName());
+
+	}
+
+	@Test
+	public void shouldFetchJobConfig() throws JenkinsClientException {
+
+		String jobName = "test-maven";
+
+		JenkinsClient client = new JenkinsClient("http://localhost:8080/");
+		Config config = client.getItemConfig(jobName);
+		Assert.assertEquals("maven-plugin@2.7.1", config.getPlugin());
+		Assert.assertEquals("jenkins.mvn.DefaultSettingsProvider", config.getSettings().getClazz());
+		Assert.assertEquals("jenkins.mvn.DefaultGlobalSettingsProvider", config.getGlobalSettings().getClazz());
+		Assert.assertEquals("https://github.com/teggr/modern-java-development.git",
+				config.getScm().getLocations().stream().findFirst().get().getSvnLocation().getRemote());
 
 	}
 
