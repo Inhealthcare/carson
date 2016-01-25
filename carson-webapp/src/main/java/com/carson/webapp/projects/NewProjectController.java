@@ -45,7 +45,7 @@ public class NewProjectController {
 		// test the initial settings before creating the new project
 		Project project = new Project();
 		form.update(project);
-		ProjectTest test = new ProjectTest(project);
+		ValidateProject test = new ValidateProject(project);
 		ProjectTestResult result = test.execute();
 
 		// map results to binding object

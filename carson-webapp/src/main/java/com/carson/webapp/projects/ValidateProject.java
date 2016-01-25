@@ -1,6 +1,7 @@
 package com.carson.webapp.projects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +16,11 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-public class ProjectTest {
+public class ValidateProject {
 
 	private Project project;
 
-	public ProjectTest(Project project) {
+	public ValidateProject(Project project) {
 		this.project = project;
 	}
 
@@ -74,13 +75,37 @@ public class ProjectTest {
 				System.exit(1);
 			}
 
-			listEntries(repository, "");
+			validateProjectStructure(repository);
 
 			long latestRevision = repository.getLatestRevision();
 			System.out.println("Repository latest revision: " + latestRevision);
 
 		} catch (Exception e) {
 			throw e;
+		}
+
+	}
+
+	private void validateProjectStructure(SVNRepository repository) throws Exception {
+
+		List<String> projectFolders = new ArrayList<>(Arrays.asList("trunk", "branches", "tags"));
+
+		String path = "";
+		Collection entries = repository.getDir(path, -1, null, (Collection) null);
+		Iterator iterator = entries.iterator();
+		while (iterator.hasNext()) {
+			SVNDirEntry entry = (SVNDirEntry) iterator.next();
+			System.out.println("/" + (path.equals(path) ? path : path + "/") + entry.getName() + " ( author: '"
+					+ entry.getAuthor() + "'; revision: " + entry.getRevision() + "; date: " + entry.getDate() + ")");
+			if (!projectFolders.contains(entry.getName())) {
+				throw new Exception("Project structure was incorrect");
+			} else {
+				projectFolders.remove(entry.getName());
+			}
+		}
+
+		if (!projectFolders.isEmpty()) {
+			throw new Exception("Project structure was incorrect");
 		}
 
 	}
