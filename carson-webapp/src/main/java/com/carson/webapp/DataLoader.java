@@ -27,7 +27,7 @@ public class DataLoader implements CommandLineRunner {
 		form.setScmUrl("https://github.com/teggr/modern-java-development.git");
 		form.setScmUsername("teggr");
 		
-		form.update(project);
+//		form.update(project);
 		
 		projectRepository.save(project);
 		

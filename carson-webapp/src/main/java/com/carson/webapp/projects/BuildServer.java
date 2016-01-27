@@ -3,12 +3,14 @@ package com.carson.webapp.projects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 
-@Embeddable
-public class BuildServer {
+import com.carson.webapp.AbstractEntity;
 
+@Entity
+public class BuildServer extends AbstractEntity {
+	
 	@Embedded
 	private BuildStatus buildStatus = new BuildStatus();
 

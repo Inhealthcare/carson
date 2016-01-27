@@ -7,7 +7,7 @@ import org.springframework.validation.ObjectError;
 
 public class BindingResultMapper {
 
-	public void addErrors(ProjectTestResult result, String objectName, BindingResult binding) {
+	public void addErrors(ConnectionValidationResult result, String objectName, BindingResult binding) {
 
 		List<String> errors = result.getErrors();
 		for (String error : errors) {

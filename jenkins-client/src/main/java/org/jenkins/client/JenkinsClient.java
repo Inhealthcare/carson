@@ -2,6 +2,7 @@ package org.jenkins.client;
 
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.jenkins.client.api.config.Config;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,7 +33,11 @@ public class JenkinsClient {
 	private String apiUrl;
 	private RestTemplate template = new RestTemplate();
 
-	public JenkinsClient(String baseUrl) {
+	public JenkinsClient(String baseUrl, String username, String password) {
+		if (!StringUtils.isEmpty(username)) {
+			ClientHttpRequestInterceptor auth = new BasicAuthHttpRequestInterceptor(username, password);
+			this.template.setInterceptors(Arrays.asList(auth));
+		}
 		if (baseUrl.endsWith("/")) {
 			baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
 		}

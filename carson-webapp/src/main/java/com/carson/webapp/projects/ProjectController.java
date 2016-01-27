@@ -60,7 +60,7 @@ public class ProjectController {
 
 		JenkinsBuildServer jenkins = buildServer.getJenkinsBuildServer();
 
-		JenkinsClient jenkinsClient = new JenkinsClient(jenkins.getUrl());
+		JenkinsClient jenkinsClient = new JenkinsClient(jenkins.getUrl(), jenkins.getUsername(), jenkins.getPassword());
 
 		jenkinsClient.createItem(project.getName(), ConfigFactory.createMavenProject());
 

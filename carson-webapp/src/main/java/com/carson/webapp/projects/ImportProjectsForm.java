@@ -2,7 +2,7 @@ package com.carson.webapp.projects;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class NewProjectForm {
+public class ImportProjectsForm {
 
 	@NotBlank
 	private String scmUrl;
@@ -13,9 +13,6 @@ public class NewProjectForm {
 
 	@NotBlank
 	private String buildUrl;
-
-	@NotBlank
-	private String name;
 
 	private String buildUsername;
 
@@ -53,14 +50,6 @@ public class NewProjectForm {
 		this.buildUrl = buildUrl;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public void setBuildUsername(String buildUsername) {
 		this.buildUsername = buildUsername;
 	}
@@ -75,6 +64,12 @@ public class NewProjectForm {
 
 	public String getBuildPassword() {
 		return buildPassword;
+	}
+
+	@Override
+	public String toString() {
+		return "ImportProjectsForm [scmUrl=" + scmUrl + ", scmUsername=" + scmUsername + ", buildUrl=" + buildUrl
+				+ ", buildUsername=" + buildUsername + "]";
 	}
 
 }

@@ -10,40 +10,23 @@
 		<div class="row">
 			<div class="col-md-12">
 
-				<h1 th:text="#{projects.new.title}"></h1>
-				<p th:text="#{projects.new.introduction}"></p>
+				<h1 th:text="#{projects.import.title}"></h1>
+				<p th:text="#{projects.import.introduction}"></p>
 				
-				<form method="post" th:object="${newProjectForm}">
+				<form method="post" th:object="${importProjectsForm}">
 				
 					<!-- global error panel -->
 					<div th:if="${#fields.hasErrors('*')}" class="panel panel-danger">
 						<div class="panel-heading">
-					    	<h3 class="panel-title" th:text="#{projects.new.form.errors.title}"></h3>
+					    	<h3 class="panel-title" th:text="#{projects.import.form.errors.title}"></h3>
 					  	</div>
 					  	  <div class="panel-body">
-					  	  	<p th:text="#{projects.new.form.errors.introduction}"></p>
+					  	  	<p th:text="#{projects.import.form.errors.introduction}"></p>
 					  	  	<ul th:if="${#fields.hasErrors('global')}">
 							  <li th:each="err : ${#fields.errors('global')}" th:text="${err}">Input is incorrect</li>
 							</ul>
 					  	  </div>
-					</div>
-				
-					<!-- new project panel -->
-					<div class="panel panel-default">
-					  <div class="panel-heading">
-					    <h3 class="panel-title" th:text="#{projects.new.form.title}"></h3>
-					  </div>
-					  <div class="panel-body">
-
-							<p th:text="#{projects.new.form.introduction}"></p>
-							<div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
-								<label class="control-label" for="name" th:text="#{projects.new.form.name.label}"></label>
-								<input type="text" class="form-control"  th:field="*{name}" th:placeholder="#{projects.new.form.name.place}"></input>
-								<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="help-block"></span>
-							</div>
-
-						</div>
-					</div>
+					</div>				
 					
 					<!-- scm panel -->
 					<div class="panel panel-default">
@@ -99,7 +82,7 @@
 					  </div>
 					</div>
 					
-					<input type="submit" class="btn btn-default" th:value="#{projects.new.form.submit}"></input>
+					<input type="submit" class="btn btn-default" th:value="#{projects.import.form.submit}"></input>
 					
 				</form>
 

@@ -13,7 +13,7 @@ public class ConnecToJenkins {
 	@Test
 	public void shouldConnectToJenkins() throws JenkinsClientException {
 
-		JenkinsClient client = new JenkinsClient("http://localhost:8080");
+		JenkinsClient client = new JenkinsClient("http://localhost:8080", null, null);
 		JenkinsState node = client.getState();
 
 		Assert.assertEquals(Mode.NORMAL, node.getMode());
@@ -25,7 +25,7 @@ public class ConnecToJenkins {
 
 		String jobName = "my-usual-build";
 
-		JenkinsClient client = new JenkinsClient("http://localhost:8080/");
+		JenkinsClient client = new JenkinsClient("http://localhost:8080/", null, null);
 		JobState set = client.getJobState(jobName);
 		Assert.assertEquals(jobName, set.getDisplayName());
 
@@ -36,7 +36,7 @@ public class ConnecToJenkins {
 
 		String jobName = "my-new-build";
 
-		JenkinsClient client = new JenkinsClient("http://localhost:8080/");
+		JenkinsClient client = new JenkinsClient("http://localhost:8080/", null, null);
 		client.createItem(jobName, ConfigFactory.createMavenProject());
 		JobState set = client.getJobState(jobName);
 		Assert.assertEquals(jobName, set.getDisplayName());
@@ -48,7 +48,7 @@ public class ConnecToJenkins {
 
 		String jobName = "test-maven";
 
-		JenkinsClient client = new JenkinsClient("http://localhost:8080/");
+		JenkinsClient client = new JenkinsClient("http://localhost:8080/", null, null);
 		Config config = client.getItemConfig(jobName);
 		Assert.assertEquals("maven-plugin@2.7.1", config.getPlugin());
 		Assert.assertEquals("jenkins.mvn.DefaultSettingsProvider", config.getSettings().getClazz());

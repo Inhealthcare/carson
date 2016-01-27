@@ -2,11 +2,11 @@ package com.carson.webapp.projects;
 
 import java.util.List;
 
-public class ProjectTestResult {
+public class ConnectionValidationResult {
 
 	private List<String> errors;
 
-	public ProjectTestResult(List<String> errors) {
+	public ConnectionValidationResult(List<String> errors) {
 		this.errors = errors;
 	}
 	

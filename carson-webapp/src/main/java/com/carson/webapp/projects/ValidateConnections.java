@@ -16,15 +16,15 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-public class ValidateProject {
+public class ValidateConnections {
 
 	private Project project;
 
-	public ValidateProject(Project project) {
+	public ValidateConnections(Project project) {
 		this.project = project;
 	}
 
-	public ProjectTestResult execute() {
+	public ConnectionValidationResult execute() {
 
 		List<String> errorList = new ArrayList<>();
 
@@ -40,13 +40,15 @@ public class ValidateProject {
 			errorList.add("project.text.build.connection.error");
 		}
 
-		ProjectTestResult result = new ProjectTestResult(errorList);
+		ConnectionValidationResult result = new ConnectionValidationResult(errorList);
 		return result;
 	}
 
 	private void testBuild() throws Exception {
 
-		JenkinsClient client = new JenkinsClient(project.getBuildServer().getJenkinsBuildServer().getUrl());
+		JenkinsClient client = new JenkinsClient(project.getBuildServer().getJenkinsBuildServer().getUrl(),
+				project.getBuildServer().getJenkinsBuildServer().getUsername(),
+				project.getBuildServer().getJenkinsBuildServer().getPassword());
 		client.getState();
 
 	}

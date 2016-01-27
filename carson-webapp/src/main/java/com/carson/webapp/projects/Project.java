@@ -1,10 +1,9 @@
 package com.carson.webapp.projects;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.carson.webapp.AbstractEntity;
 
@@ -19,10 +18,12 @@ public class Project extends AbstractEntity {
 
 	private Status status;
 
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "source_control_id")
 	private SourceControl sourceControl;
 
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "build_server_id")
 	private BuildServer buildServer;
 
 	public Project() {

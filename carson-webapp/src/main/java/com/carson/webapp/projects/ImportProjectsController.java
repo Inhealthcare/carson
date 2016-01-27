@@ -1,5 +1,7 @@
 package com.carson.webapp.projects;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -8,43 +10,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/projects/newProject")
-public class NewProjectController {
+@RequestMapping("/projects/import")
+public class ImportProjectsController {
 
-	private static final String NEW_PROJECT_FORM_OBJECT_NAME = "newProjectForm";
+	private static final String IMPORT_PROJECTS_FORM_OBJECT_NAME = "importProjectsForm";
 
-	private static final Logger logger = LoggerFactory.getLogger(NewProjectController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImportProjectsController.class);
 
 	@Autowired
 	private ProjectRepository projectRepository;
 
-	@ModelAttribute(NEW_PROJECT_FORM_OBJECT_NAME)
-	private NewProjectForm newProjectForm() {
-		return new NewProjectForm();
+	@ModelAttribute(IMPORT_PROJECTS_FORM_OBJECT_NAME)
+	private ImportProjectsForm importProjectsForm() {
+		return new ImportProjectsForm();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String newProject(ModelMap map) {
-
-		map.addAttribute("projects", projectRepository.findAllByOrderByNameAsc());
-
-		return "newProject";
-
+	public String importProjects(ModelMap map) {
+		return "importProjects";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String createNewProject(ModelMap map, @Valid @ModelAttribute NewProjectForm form, BindingResult binding) {
+	public String createNewProject(ModelMap map, @Valid @ModelAttribute ImportProjectsForm form,
+			BindingResult binding) {
 
-		logger.debug("Creaing new form " + form);
+		logger.debug("Importing projects " + form);
+
+		// return to page if we've got errors
+		if (binding.hasErrors()) {
+			return importProjects(map);
+		}
 
 		// test the initial settings before creating the new project
 		Project project = new Project();
-		project.setName(form.getName());
 
 		SvnRepository svn = new SvnRepository();
 		svn.setUrl(form.getScmUrl());
@@ -57,8 +61,6 @@ public class NewProjectController {
 
 		JenkinsBuildServer server = new JenkinsBuildServer();
 		server.setUrl(form.getBuildUrl());
-		server.setUsername(form.getBuildUsername());
-		server.setPassword(form.getBuildPassword());
 		BuildServer bs = new BuildServer();
 		bs.setJenkinsBuildServer(server);
 		project.setBuildServer(bs);
@@ -69,15 +71,20 @@ public class NewProjectController {
 		// map results to binding object
 		if (result.hasErrors()) {
 			BindingResultMapper mapper = new BindingResultMapper();
-			mapper.addErrors(result, NEW_PROJECT_FORM_OBJECT_NAME, binding);
+			mapper.addErrors(result, IMPORT_PROJECTS_FORM_OBJECT_NAME, binding);
 		}
 
-		// return to page if we've got errors
-		if (binding.hasErrors()) {
-			return newProject(map);
+		// now need to create multiple projects from the output of the svn
+		// search for project results
+		try {
+			List<Project> projects = new ProjectImporter(form).importProjects().getList();
+			for (Project projectForCreations : projects) {
+				projectRepository.save(projectForCreations);
+			}
+		} catch (Exception e) {
+			binding.addError(new ObjectError(IMPORT_PROJECTS_FORM_OBJECT_NAME, e.getMessage()));
+			return importProjects(map);
 		}
-
-		projectRepository.save(project);
 
 		return "redirect:/projects";
 

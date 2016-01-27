@@ -13,14 +13,25 @@
 		  	
 		  	<div th:if="${projects.empty}">
 		  		<h2 th:text="#{projects.welcome.title}"></h2>
-		  		<p th:text="#{projects.welcome.action}"></p>
-		  		<a th:text="#{projects.welcome.link}" th:href="@{/projects/newProject}" class="btn btn-default" ></a>
+		  		<div>
+			  		<p th:text="#{projects.welcome.add.action}"></p>
+			  		<a th:text="#{projects.welcome.add.link}" th:href="@{/projects/newProject}" class="btn btn-default" ></a>
+		  		</div>
+		  		<div>
+			  		<p th:text="#{projects.welcome.import.action}"></p>
+			  		<a th:text="#{projects.welcome.import.link}" th:href="@{/projects/import}" class="btn btn-default" ></a>
+		  		</div>
 		  	</div>
 		  	
 		  	<div th:if="${!projects.empty}">
 		  	
 		  		<div>
-		  			<a th:text="#{projects.welcome.link}" th:href="@{/projects/newProject}" class="btn btn-default" ></a>
+			  		<p th:text="#{projects.welcome.add.action}"></p>
+			  		<a th:text="#{projects.welcome.add.link}" th:href="@{/projects/newProject}" class="btn btn-default" ></a>
+		  		</div>
+		  		<div>
+			  		<p th:text="#{projects.welcome.import.action}"></p>
+			  		<a th:text="#{projects.welcome.import.link}" th:href="@{/projects/import}" class="btn btn-default" ></a>
 		  		</div>
 		  		
 		  		<div class="media" th:each="project : ${projects}">
