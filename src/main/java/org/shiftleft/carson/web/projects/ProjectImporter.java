@@ -37,10 +37,10 @@ public class ProjectImporter {
 
 		// test the location
 		VersionControlTemplate versionControlTemplate = new SVNTemplate(location);
-		versionControlTemplate.test();
+		versionControlTemplate.testConnection();
 
 		// convert all the version control project roots to projects
-		list.addAll(versionControlTemplate.listProjectRoots().stream().map(r -> createProject(r))
+		list.addAll(versionControlTemplate.getProjectRoots().stream().map(r -> createProject(r))
 				.collect(Collectors.toList()));
 
 		return this;

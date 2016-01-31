@@ -57,7 +57,7 @@ public class ValidateConnections {
 
 		// test the location
 		VersionControlTemplate versionControlTemplate = new SVNTemplate(location);
-		versionControlTemplate.test();
+		versionControlTemplate.testConnection();
 
 	}
 
