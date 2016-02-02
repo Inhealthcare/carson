@@ -1,7 +1,5 @@
-# Carson
-
-Development workflow housekeeper to support best practices around build and continous integration for maven software projects. Supported by Jenkins as a build server
+Automating best practice operational workflow of source code and build pipelines for continuous integration
 
 ## Wiki
 
-For usage instructions, see the [wiki](https://github.com/teggr/CARSON/wiki)
+For usage instructions, see the [wiki](https://github.com/Inhealthcare/carson/wiki)
