@@ -43,7 +43,7 @@ public class DevelopmentConfiguration {
 
 	}
 
-	@ConfigurationProperties("vc.svn.location")
+	@ConfigurationProperties("import.svn")
 	@Bean
 	public SVNLocationProperties svnLocationProperties() {
 		return new SVNLocationProperties();
