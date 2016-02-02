@@ -56,12 +56,20 @@ public class ProjectQuery {
 			logger.debug("Found project root at {} now looking for branches and tags", path);
 
 			Set<SVNDirEntry> branches = new HashSet<>();
-			repository.getDir(path + "/branches", -1, false, branches);
+			String branchesPath = path + "/branches";
+			SVNNodeKind branchesNode = repository.checkPath(branchesPath, -1);
+			if (branchesNode == SVNNodeKind.DIR) {
+				repository.getDir(branchesPath, -1, false, branches);
+			}
 			Set<String> branchNames = branches.stream().map(d -> d.getName()).collect(Collectors.toSet());
 			logger.debug("Found {} branches: {}", branchNames.size(), branchNames);
 
 			Set<SVNDirEntry> tags = new HashSet<>();
-			repository.getDir(path + "/tags", -1, false, tags);
+			String tagsPath = path + "/tags";
+			SVNNodeKind tagsNode = repository.checkPath(tagsPath, -1);
+			if (tagsNode == SVNNodeKind.DIR) {
+				repository.getDir(tagsPath, -1, false, tags);
+			}
 			Set<String> tagNames = tags.stream().map(d -> d.getName()).collect(Collectors.toSet());
 			logger.debug("Found {} tags: {}", tagNames.size(), tagNames);
 
@@ -93,10 +101,15 @@ public class ProjectQuery {
 
 	private static boolean isProjectRoot(SVNDirEntry directory, Collection<SVNDirEntry> entries) {
 
-		List<String> projectFolders = new ArrayList<>(Arrays.asList("trunk", "branches", "tags"));
+		List<String> projectFolders = new ArrayList<>(Arrays.asList("trunk")); // ,
+																				// "branches"
+																				// ));
+																				// //,
+																				// "tags"));
 		for (SVNDirEntry entry : entries) {
 			if (!projectFolders.contains(entry.getName())) {
-				return false;
+				// allow spurious extra folder names
+				// return false;
 			} else {
 				projectFolders.remove(entry.getName());
 			}
