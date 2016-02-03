@@ -55,9 +55,9 @@ public class ProjectImporter {
 
 		BuildServer buildServer = new BuildServer();
 		JenkinsBuildServer jenkinsBuildServer = new JenkinsBuildServer();
-//		jenkinsBuildServer.setUrl(importSettings.getBuildUrl());
-//		jenkinsBuildServer.setUsername(importSettings.getBuildUsername());
-//		jenkinsBuildServer.setPassword(importSettings.getBuildPassword());
+		// jenkinsBuildServer.setUrl(importSettings.getBuildUrl());
+		// jenkinsBuildServer.setUsername(importSettings.getBuildUsername());
+		// jenkinsBuildServer.setPassword(importSettings.getBuildPassword());
 		buildServer.setJenkinsBuildServer(jenkinsBuildServer);
 		project.setBuildServer(buildServer);
 
@@ -67,6 +67,11 @@ public class ProjectImporter {
 		svnRepository.setUsername(importSettings.getScmUsername());
 		svnRepository.setPassword(importSettings.getScmPassword());
 		sourceControl.setSvnRepository(svnRepository);
+
+		sourceControl.setTrunk(root.getTrunk().getName());
+		sourceControl.setBranches(root.getBranches().stream().map(b -> b.getName()).collect(Collectors.toSet()));
+		sourceControl.setTags(root.getTags().stream().map(b -> b.getName()).collect(Collectors.toSet()));
+
 		project.setSourceControl(sourceControl);
 
 		return project;

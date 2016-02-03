@@ -37,7 +37,7 @@
 		  		<div class="media" th:each="project : ${projects}">
 				  <div class="media-left">
 				    <a href="#">
-				      <img class="media-object" src="http://placehold.it/50x50"></img>
+				      <img class="media-object" src="http://placehold.it/100x100"></img>
 				    </a>
 				  </div>
 				  <div class="media-body">
@@ -55,6 +55,9 @@
 				    		<ul>
 						    	<li th:text="${project.sourceControl.svnRepository.url}"></li>
 						    	<li th:text="${project.sourceControl.svnRepository.username}"></li>
+						    	<li th:text="${project.sourceControl.trunk}"></li>
+						    	<li><span th:text="#{projects.list.branches}"></span> <span th:text="${project.sourceControl.branches.size()}"></span></li>
+						    	<li><span th:text="#{projects.list.tags}"></span> <span th:text="${project.sourceControl.tags.size()}"></span></li>
 						    </ul>
 				    	</div>
 				    	
